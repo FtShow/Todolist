@@ -1,0 +1,83 @@
+.App {
+  padding: 30px;
+  display: flex;
+}
+
+.App > div {
+  margin-right: 50px;
+}
+
+.todolist{
+  border: 3px solid #090991;
+  border-radius: 5px;
+  background-color: #7d898e;
+  padding: 15px;
+  height: 100%;
+}
+.todolistOpt{
+  border: 55px solid darkblue;
+  border-radius: 5px;
+  background-color: darkolivegreen;
+  padding: 15px;
+  height: 100%;
+}
+
+.olWithButton{
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+  list-style: initial;
+}
+.olWithButton button{
+
+  margin: 0 0 0 5px;
+
+}
+ol{
+  padding: 0;
+}
+.task{
+  font-weight: 500;
+  margin: 0 0 0 5px;
+}
+.taskIsDone {
+  font-weight: normal;
+  text-decoration: line-through;
+  opacity: 50%;
+  margin: 0 0 0 5px;
+}
+.filterBtnActive {
+  background-color: #3e5365;
+  border: none;
+  margin: 2px;
+  padding: 5px 10px;
+  color: white;
+}
+.filterBtn{
+  border: none;
+  margin: 2px;
+  padding: 4px 10px;
+}
+.filterBtnWrapper{
+  display: flex;
+  justify-content: space-between;
+}
+ul{
+  list-style: none;
+  padding: 0;
+}
+li{
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+}
+h3{
+  text-align: center;
+}
+
+.inputError{
+  border: 2px solid red;
+  outline: none;
+}
+
+
