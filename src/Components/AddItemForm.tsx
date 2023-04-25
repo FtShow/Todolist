@@ -1,8 +1,11 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+
 type AddItemFormPropsType = {
-    callback: (newTitle: string)=>void
+    callback: (newTitle: string) => void
 }
-export const AddItemForm:React.FC<AddItemFormPropsType> = (props) => {
+export const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
     const [title, setTitle] = useState<string>("")
     const [error, setError] = useState<boolean>(false)
     const censure = title.split(" ").reduce((acc: boolean, elem) => elem == "fuck" ? true : acc, false)
@@ -21,7 +24,12 @@ export const AddItemForm:React.FC<AddItemFormPropsType> = (props) => {
         }
         setTitle("")
     }
-
+    const matherialUIstylesButton = {
+        maxWidth: "30px",
+        maxHeight: "30px",
+        minWidth: "30px",
+        minHeight: "30px",
+    }
     const onPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         !isAddBtnDisabled && event.key === "Enter" && addTaskHandler()
     }
@@ -35,14 +43,22 @@ export const AddItemForm:React.FC<AddItemFormPropsType> = (props) => {
         : null
     return (
         <div>
-            <input className={itTitleLengthToLong || error ? "inputError" : undefined}
-                   value={title}
-                   onChange={setTitleHandler}
-                   onKeyDown={onPressHandler}/>
-            <button disabled={isAddBtnDisabled} onClick={addTaskHandler}>+</button>
+            <TextField
+                error={!!error}
+                size='small'
+                value={title}
+                onChange={setTitleHandler}
+                onKeyPress={onPressHandler}
+                id="outlined-basic"
+                label={isAddBtnDisabled ? "Title is required" : "Type out smth."}
+                variant="outlined"
+            />
+            <Button variant="contained"
+                    style={matherialUIstylesButton}
+                    disabled={isAddBtnDisabled}
+                    onClick={addTaskHandler}>+</Button>
 
-            {userMessage || titleMaxLengthWarning}
-            {censure && <div style={{color: "red"}}>itTitleCensure</div>}
+
         </div>
     );
 };

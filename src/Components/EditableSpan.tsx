@@ -3,6 +3,7 @@ import React, {ChangeEvent, useState} from "react";
 type EditableSpanPropsType = {
     oldTitle: string,
     callback: (updateTitle: string) => void
+    className?: string
 }
 export const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
     const [updateTitle, setUpdateTitle] = useState(props.oldTitle)
@@ -18,9 +19,10 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
         setEdit(!edit)
         edit && addTask()
     }
+
     return (
         edit
             ? <input onBlur={editHandler} onChange={changeHandler} autoFocus value={updateTitle}/>
-            : <span onDoubleClick={editHandler}>{props.oldTitle}</span>
+            : <span className={props.className} onDoubleClick={editHandler}>{props.oldTitle}</span>
     );
 };
