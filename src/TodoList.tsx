@@ -2,17 +2,22 @@ import React, {ChangeEvent, KeyboardEvent, FC, useRef, useState} from "react";
 // @ts-ignore
 import autoAnimate from "@formkit/auto-animate";
 import {FilterValuesType} from "./App";
+import {AddItemForm} from "./Components/AddItemForm";
+import {EditableSpan} from "./Components/EditableSpan";
 
 type TodoListPropsType = {
+
     todolistId: string
+    removeTodolist: (v: string) => void
     title: string;
-    removeTodolist: (todoliskId: string) => void
     tasks: TaskType[];
-    removeTask: (todoliskId: string, taskId: string) => void;
-    changeFilter: (todoliskId: string, nextFilter: FilterValuesType) => void
-    addTask: (todoliskId: string, title: string) => void
+    removeTask: (todolistId: string, taskId: string) => void;
+    changeFilter: (todolistId: string, nextFilter: FilterValuesType) => void
+    addTask: (todolistId: string, title: string) => void
     changeTaskStatus: (todolistId: string, taskId: string, newIsDoneValue: boolean) => void
+    editTask: (todolistId: string, taskId: string, title: string) => void
     filter: FilterValuesType
+    updateTodolistTitle: (todolistId: string, updateTitle: string) => void
 }
 export type TaskType = {
     title: string;
@@ -21,54 +26,34 @@ export type TaskType = {
 }
 
 const TodoList: FC<TodoListPropsType> = (props) => {
-
-    const [title, setTitle] = useState<string>("")
-    const [error, setError] = useState<boolean>(false)
-    console.log("12")
-    const titleMaxLength = 25;
-    const addTaskHandler = () => {
-        const trimedTitle = title.trim()
-        if (trimedTitle) {
-            props.addTask(props.todolistId,trimedTitle)
-        } else {
-            setError(true)
-        }
-
-        setTitle("")
-    }
-    const censure = title.split(" ").reduce((acc: boolean, elem) => elem == "fuck" ? true : acc, false)
-
-    const itTitleLengthToLong = title.length > titleMaxLength
-
-    const isAddBtnDisabled: boolean = !title.length || itTitleLengthToLong
-    const userMessage = error ? <div style={{color: "red"}}>Title is required</div> : null
-
-    const onPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        !isAddBtnDisabled && event.key === "Enter" && addTaskHandler()
-    }
-    const setTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.currentTarget.value)
-        error && setError(false)
+    const addTaskHandler = (title: string) => {
+        props.addTask(props.todolistId, title)
     }
 
-    const titleMaxLengthWarning = itTitleLengthToLong
-        ? <div style={{color: "red"}}>Title to long</div>
-        : null
+    const editTaskHandler = (taskID: string,title:string ) => {
+        props.editTask(props.todolistId, taskID, title )
+    }
+    const updateTodolistTitleHandler = (updateTitle:string) =>{
+        props.updateTodolistTitle(props.todolistId, updateTitle)
+
+    }
     //вывод каждой такси
-    const tasksJSXElements: Array<JSX.Element> = props.tasks.map((elem: TaskType, index: number): JSX.Element => {
+    const tasksJSXElements: Array<JSX.Element> = props.tasks?.map((elem: TaskType, index: number): JSX.Element => {
         const removeTask = () => props.removeTask(props.todolistId, elem.id);
         const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
 
             props.changeTaskStatus(props.todolistId, elem.id, e.currentTarget.checked)
         }
+
         const taskClass = elem.isDone ? "taskIsDone" : "task"
         return (
 
             <li key={index}>
-                <div><input type="checkbox"
+                <div>
+                    <input type="checkbox"
                             onChange={changeStatus}
                             checked={elem.isDone}/>
-                    <span className={taskClass}>{elem.title}</span>
+                    <EditableSpan callback={(updateTitle)=>{editTaskHandler(elem.id, updateTitle)}} oldTitle={elem.title}/>
                 </div>
                 <button onClick={removeTask}>X</button>
             </li>)
@@ -80,16 +65,11 @@ const TodoList: FC<TodoListPropsType> = (props) => {
         <div className="todolist">
 
 
-            <h3>{props.title}<button onClick={()=>{props.removeTodolist(props.todolistId)}}>X</button></h3>
+            <h3><EditableSpan oldTitle={props.title} callback={(updateTitle)=>{updateTodolistTitleHandler(updateTitle)}}/>
+                <button onClick={() => props.removeTodolist(props.todolistId)}>X</button>
+            </h3>
             <div>
-                <input className={itTitleLengthToLong || error ? "inputError" : undefined}
-                       value={title}
-                       onChange={setTitleHandler}
-                       onKeyDown={onPressHandler}/>
-                <button disabled={isAddBtnDisabled} onClick={addTaskHandler}>+</button>
-
-                {userMessage || titleMaxLengthWarning}
-                {censure && <div style={{color: "red"}}>itTitleCensure</div>}
+                <AddItemForm callback={addTaskHandler}/>
             </div>
             <ul>
                 {/*вывод массива тасок*/}
@@ -98,11 +78,11 @@ const TodoList: FC<TodoListPropsType> = (props) => {
             <div className={"filterBtnWrapper"}>
 
                 <button className={props.filter === "all" ? "filterBtnActive" : "filterBtn"}
-                        onClick={() => props.changeFilter(props.todolistId, "all" )}>All
+                        onClick={() => props.changeFilter(props.todolistId, "all")}>All
                 </button>
 
                 <button className={props.filter === "active" ? "filterBtnActive" : "filterBtn"}
-                        onClick={() => props.changeFilter(props.todolistId, "active", )}>Active
+                        onClick={() => props.changeFilter(props.todolistId, "active",)}>Active
                 </button>
 
                 <button className={props.filter === "complete" ? "filterBtnActive" : "filterBtn"}
