@@ -35,11 +35,6 @@ function App() {
     const todoListTitle_1 = "What to learn";
 
 
-    let [todolist, dispatchTodolist] = useReducer(todoListReducer, [
-        {id: todolistID1, title: "What to learn", filter: "all"},
-        {id: todolistID2, title: "What to buy", filter: "all"},
-    ])
-
     const tasks_1 = {
         [todolistID1]: [
             {id: v1(), title: "HTML&CSS1", isDone: true},
@@ -61,6 +56,11 @@ function App() {
             {id: v1(), title: "React", isDone: false},
         ]
     }
+
+    const [todolist, dispatchTodolist] = useReducer(todoListReducer, [
+        {id: todolistID1, title: "What to learn", filter: "all"},
+        {id: todolistID2, title: "What to buy", filter: "all"},
+    ])
 
     const [tasks, dispatchTask] = useReducer(tasksReducer, tasks_1);
 

@@ -7,7 +7,18 @@ export const tasksReducer = (state: TasksType, action: combinedActionTaskType): 
         case "ADD-TASK": {
             return {
                 ...state,
-                [action.payload.todolistId]: [...state[action.payload.todolistId], action.payload.newTask]
+                [action.payload.todolistId]: [action.payload.newTask, ...state[action.payload.todolistId]]
+            }
+        }
+        case "ADD-TASK2": {
+            const newTask = {
+                id: v1(),
+                title: action.payload.newTaskTitle,
+                isDone: false,
+            }
+            return {
+                ...state,
+                [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]
             }
         }
         case "EDIT-TASK": {
@@ -44,8 +55,10 @@ type combinedActionTaskType =
     | changeTaskStatusACType
     | addTaskListForNewTodolistACType
     | removeTaskACType
+    | addTaskACType2
 
 type addTaskACType = ReturnType<typeof addTaskAC>
+type addTaskACType2 = ReturnType<typeof addTaskAC2>
 type editTaskACType = ReturnType<typeof editTaskAC>
 type removeTaskACType = ReturnType<typeof removeTaskAC>
 type changeTaskStatusACType = ReturnType<typeof changeTaskStatusAC>
@@ -57,6 +70,15 @@ export const addTaskAC = (todolistId: string, newTask: TaskType) => {
         payload: {
             todolistId,
             newTask
+        }
+    } as const
+}
+export const addTaskAC2 = (todolistId: string, newTaskTitle: string) => {
+    return {
+        type: "ADD-TASK2",
+        payload: {
+            todolistId,
+            newTaskTitle
         }
     } as const
 }
