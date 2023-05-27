@@ -100,7 +100,6 @@ function App() {
         dispatchTodolist(action)
         dispatchTask(action)
 
-       // dispatchTask(addTaskListForNewTodolistAC())
     }
 
     return (
