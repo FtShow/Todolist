@@ -30,6 +30,7 @@ export type TaskType = {
 }
 
 const TodoList: FC<TodoListPropsType> = (props) => {
+
     const addTaskHandler = (title: string) => {
         props.addTask(props.todolistId, title)
     }

@@ -1,6 +1,7 @@
 import {TasksType} from "../App";
 import {TaskType} from "../TodoList";
 import {v1} from "uuid";
+import {addTodolistACType} from "./todoListReducer";
 
 export const tasksReducer = (state: TasksType, action: combinedActionTaskType): TasksType => {
     switch (action.type) {
@@ -10,17 +11,17 @@ export const tasksReducer = (state: TasksType, action: combinedActionTaskType): 
                 [action.payload.todolistId]: [action.payload.newTask, ...state[action.payload.todolistId]]
             }
         }
-        case "ADD-TASK2": {
-            const newTask = {
-                id: v1(),
-                title: action.payload.newTaskTitle,
-                isDone: false,
-            }
-            return {
-                ...state,
-                [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]
-            }
-        }
+        // case "ADD-TASK2": {
+        //     const newTask = {
+        //         id: v1(),
+        //         title: action.payload.newTaskTitle,
+        //         isDone: false,
+        //     }
+        //     return {
+        //         ...state,
+        //         [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]
+        //     }
+        // }
         case "EDIT-TASK": {
             return {
                 ...state,
@@ -44,6 +45,11 @@ export const tasksReducer = (state: TasksType, action: combinedActionTaskType): 
         case "ADD-NEW-TASK-LIST": {
             return {...state, [v1()]: []}
         }
+        case "ADD-TODOLIST": {
+            return {...state,
+                [action.payload.todolistID]: []
+            }
+        }
         default:
             return state
     }
@@ -56,6 +62,7 @@ type combinedActionTaskType =
     | addTaskListForNewTodolistACType
     | removeTaskACType
     | addTaskACType2
+    | addTodolistACType
 
 type addTaskACType = ReturnType<typeof addTaskAC>
 type addTaskACType2 = ReturnType<typeof addTaskAC2>

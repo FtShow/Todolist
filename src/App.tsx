@@ -15,7 +15,7 @@ import {
     updateTodolistTitleAC
 } from "./Reducers/todoListReducer";
 import {
-    addTaskAC,
+    addTaskAC, addTaskAC2,
     addTaskListForNewTodolistAC,
     changeTaskStatusAC,
     editTaskAC,
@@ -33,7 +33,6 @@ export type todolistType = { id: string, title: string, filter: FilterValuesType
 
 function App() {
     const todoListTitle_1 = "What to learn";
-
 
     const tasks_1 = {
         [todolistID1]: [
@@ -67,9 +66,6 @@ function App() {
 
     const removeTask = (todolistId: string, taskId: string) => {
         dispatchTask(removeTaskAC(todolistId, taskId))
-        // setTasks(
-        //     {...tasks, [todolistId]: tasks[todolistId].filter(el => el.id !== taskId)}
-        // )
     };
     const updateTodolistTitle = (todolistID: string, updateTitle: string) => {
         dispatchTodolist(updateTodolistTitleAC(todolistID, updateTitle))
@@ -100,12 +96,12 @@ function App() {
         delete tasks[todolistID]
     }
     const addTodolist = (title: string) => {
-        const newTodolistID = v1()
-        const newTodolist: todolistType = {id: newTodolistID, title: title, filter: "all"}
-        dispatchTodolist(addTodolistAC(newTodolist))
-        dispatchTask(addTaskListForNewTodolistAC())
-    }
+        const action = addTodolistAC(title, v1())
+        dispatchTodolist(action)
+        dispatchTask(action)
 
+       // dispatchTask(addTaskListForNewTodolistAC())
+    }
 
     return (
 
