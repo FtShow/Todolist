@@ -1,7 +1,14 @@
 import {FilterValuesType, todolistType} from "../App";
 import {v1} from "uuid";
+import {Reducer, useReducer} from "react";
+import {todolistID1, todolistID2} from "./tasksReducer";
 
-export const todoListReducer = (state: todolistType[], action: combinedActionType): todolistType[] => {
+const todolist: todolistType[] = [
+    {id: todolistID1, title: "What to learn", filter: "all"},
+    {id: todolistID2, title: "What to buy", filter: "all"},
+]
+
+export const todoListReducer = (state: todolistType[] = todolist, action: combinedActionType): todolistType[] => {
     switch (action.type) {
         case "ADD-TODOLIST": {
             return [...state, {id: action.payload.todolistID, title: action.payload.title, filter: "all"}]
@@ -28,7 +35,7 @@ export const todoListReducer = (state: todolistType[], action: combinedActionTyp
     }
 
 }
-type combinedActionType =
+export type combinedActionType =
     addTodolistACType
     | removeTodolistACType
     | changeFilterTodolistType
