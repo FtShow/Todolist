@@ -3,7 +3,31 @@ import {TaskType} from "../TodoList";
 import {v1} from "uuid";
 import {addTodolistACType} from "./todoListReducer";
 
-export const tasksReducer = (state: TasksType, action: combinedActionTaskType): TasksType => {
+export let todolistID1 = v1();
+export let todolistID2 = v1();
+const tasks = {
+    [todolistID1]: [
+        {id: v1(), title: "HTML&CSS1", isDone: true},
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: false},
+        {id: v1(), title: "React", isDone: false},
+        {id: v1(), title: "React", isDone: false},
+        {id: v1(), title: "React", isDone: false},
+    ],
+
+    [todolistID2]: [
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: false},
+        {id: v1(), title: "React", isDone: false},
+        {id: v1(), title: "React", isDone: false},
+        {id: v1(), title: "React", isDone: false},
+    ]
+}
+
+export const tasksReducer = (state: TasksType = tasks, action: combinedActionTaskType): TasksType => {
     switch (action.type) {
         case "ADD-TASK": {
             return {
@@ -11,17 +35,6 @@ export const tasksReducer = (state: TasksType, action: combinedActionTaskType): 
                 [action.payload.todolistId]: [action.payload.newTask, ...state[action.payload.todolistId]]
             }
         }
-        // case "ADD-TASK2": {
-        //     const newTask = {
-        //         id: v1(),
-        //         title: action.payload.newTaskTitle,
-        //         isDone: false,
-        //     }
-        //     return {
-        //         ...state,
-        //         [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]
-        //     }
-        // }
         case "EDIT-TASK": {
             return {
                 ...state,

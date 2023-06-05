@@ -1,4 +1,4 @@
-import React, {Reducer, useReducer, useState} from "react";
+import React from "react";
 import "./App.css";
 import TodoList, {TaskType} from "./TodoList";
 import {v1} from "uuid";
@@ -9,21 +9,13 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import {
     addTodolistAC,
-    changeFilterTodolistAC, combinedActionType,
+    changeFilterTodolistAC,
     removeTodolistAC,
-    todoListReducer,
     updateTodolistTitleAC
 } from "./Reducers/todoListReducer";
-import {
-    addTaskAC, addTaskAC2,
-    addTaskListForNewTodolistAC,
-    changeTaskStatusAC,
-    editTaskAC,
-    removeTaskAC,
-    tasksReducer
-} from "./Reducers/tasksReducer";
+import {addTaskAC, changeTaskStatusAC, editTaskAC, removeTaskAC} from "./Reducers/tasksReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./Reducers/store";
+import {AppRootStateType, store} from "./Reducers/store";
 
 export type FilterValuesType = "all" | "active" | "complete"
 export type TasksType = {
@@ -40,7 +32,7 @@ export const AppWithRedux = () => {
     const tasks = useSelector<AppRootStateType, TasksType>(state=>state.tasks)
     const dispatch = useDispatch()
 
-    console.log(dispatch)
+    console.log(store.getState())
 
 
 

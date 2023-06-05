@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC} from "react";
+import React, {ChangeEvent, FC, useMemo} from "react";
 // @ts-ignore
 import autoAnimate from "@formkit/auto-animate";
 import {FilterValuesType} from "./App";
@@ -43,9 +43,11 @@ const TodoList: FC<TodoListPropsType> = (props) => {
 
     }
     //вывод каждой такси
-    const tasksJSXElements: Array<JSX.Element> = props.tasks?.map((elem: TaskType, index: number): JSX.Element => {
+    const tasksJSXElements: Array<JSX.Element> = useMemo( ()=>{
+        return props.tasks?.map((elem: TaskType, index: number): JSX.Element => {
         const removeTask = () => props.removeTask(props.todolistId, elem.id);
         const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
+
 
             props.changeTaskStatus(props.todolistId, elem.id, e.currentTarget.checked)
         }
@@ -66,7 +68,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
                     <DeleteIcon/>
                 </IconButton>
             </li>)
-    })
+    })}, [props.tasks])
 
 
 //вывод тудулиста
