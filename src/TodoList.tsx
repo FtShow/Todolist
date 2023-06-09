@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useMemo} from "react";
+import React, {ChangeEvent, FC, useCallback, useMemo} from "react";
 // @ts-ignore
 import autoAnimate from "@formkit/auto-animate";
 import {FilterValuesType} from "./App";
@@ -31,16 +31,15 @@ export type TaskType = {
 
 const TodoList: FC<TodoListPropsType> = (props) => {
 
-    const addTaskHandler = (title: string) => {
+    const addTaskHandler = useCallback((title: string) => {
         props.addTask(props.todolistId, title)
-    }
+    }, [])
 
     const editTaskHandler = (taskID: string, title: string) => {
         props.editTask(props.todolistId, taskID, title)
     }
     const updateTodolistTitleHandler = (updateTitle: string) => {
         props.updateTodolistTitle(props.todolistId, updateTitle)
-
     }
     //вывод каждой такси
     const tasksJSXElements: Array<JSX.Element> = useMemo( ()=>{

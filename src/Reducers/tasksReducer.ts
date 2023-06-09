@@ -5,27 +5,7 @@ import {addTodolistACType} from "./todoListReducer";
 
 export let todolistID1 = v1();
 export let todolistID2 = v1();
-const tasks = {
-    [todolistID1]: [
-        {id: v1(), title: "HTML&CSS1", isDone: true},
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: false},
-        {id: v1(), title: "React", isDone: false},
-        {id: v1(), title: "React", isDone: false},
-        {id: v1(), title: "React", isDone: false},
-    ],
-
-    [todolistID2]: [
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: false},
-        {id: v1(), title: "React", isDone: false},
-        {id: v1(), title: "React", isDone: false},
-        {id: v1(), title: "React", isDone: false},
-    ]
-}
+const tasks = {}
 
 export const tasksReducer = (state: TasksType = tasks, action: combinedActionTaskType): TasksType => {
     switch (action.type) {
@@ -36,6 +16,7 @@ export const tasksReducer = (state: TasksType = tasks, action: combinedActionTas
             }
         }
         case "EDIT-TASK": {
+
             return {
                 ...state,
                 [action.payload.todolistId]: state[action.payload.todolistId].map(el => el.id === action.payload.taskId ?

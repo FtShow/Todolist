@@ -8,6 +8,7 @@ const rootReducer = combineReducers({
     tasks: tasksReducer,
     todoLists: todoListReducer
 })
+
 // непосредственно создаём store
 export const store = legacy_createStore(rootReducer);
 // определить автоматически тип всего объекта состояния
