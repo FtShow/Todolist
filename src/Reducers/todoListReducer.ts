@@ -3,10 +3,7 @@ import {v1} from "uuid";
 import {Reducer, useReducer} from "react";
 import {todolistID1, todolistID2} from "./tasksReducer";
 
-const todolist: todolistType[] = [
-    {id: todolistID1, title: "What to learn", filter: "all"},
-    {id: todolistID2, title: "What to buy", filter: "all"},
-]
+const todolist: todolistType[] = []
 
 export const todoListReducer = (state: todolistType[] = todolist, action: combinedActionType): todolistType[] => {
     switch (action.type) {
