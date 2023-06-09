@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import "./App.css";
 import TodoList, {TaskType} from "./TodoList";
 import {v1} from "uuid";
@@ -16,6 +16,7 @@ import {
 import {addTaskAC, changeTaskStatusAC, editTaskAC, removeTaskAC} from "./Reducers/tasksReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType, store} from "./Reducers/store";
+import {TodoListWithRedux} from "./TodoListWithRedux";
 
 export type FilterValuesType = "all" | "active" | "complete"
 export type TasksType = {
@@ -25,50 +26,17 @@ export type TasksType = {
 export type todolistType = { id: string, title: string, filter: FilterValuesType }
 
 export const AppWithRedux = () => {
-    console.log("APP RENDER")
 
 
-    const todolist = useSelector<AppRootStateType, todolistType[]>(state=>state.todoLists)
-    const tasks = useSelector<AppRootStateType, TasksType>(state=>state.tasks)
+    const todolist = useSelector<AppRootStateType, todolistType[]>(state => state.todoLists)
+    const tasks = useSelector<AppRootStateType, TasksType>(state => state.tasks)
     const dispatch = useDispatch()
 
-    console.log(store.getState())
 
-
-
-
-    const removeTask = (todolistId: string, taskId: string) => {
-        dispatch(removeTaskAC(todolistId, taskId))
-    };
-    const updateTodolistTitle = (todolistID: string, updateTitle: string) => {
-        dispatch(updateTodolistTitleAC(todolistID, updateTitle))
-    }
-
-    const addTask = (todolistId: string, title: string) => {
-        const newTask = {
-            id: v1(),
-            title: title,
-            isDone: false,
-        }
-        dispatch(addTaskAC(todolistId, newTask))
-
-    }
-    const editTask = (todolistId: string, taskId: string, title: string) => {
-        dispatch(editTaskAC(todolistId, taskId, title))
-    }
-    const changeFilter = (todolistId: string, nextFilter: FilterValuesType) => {
-        dispatch(changeFilterTodolistAC(todolistId, nextFilter))
-    }
-    const changeTaskStatus = (todolistId: string, taskId: string, newIsDoneValue: boolean) => {
-        dispatch(changeTaskStatusAC(todolistId, taskId, newIsDoneValue))
-    }
-    const removeTodolist = (todolistID: string) => {
-        dispatch(removeTodolistAC(todolistID))
-    }
-    const addTodolist = (title: string) => {
+    const addTodolist = useCallback((title: string) => {
         const action = addTodolistAC(title, v1())
         dispatch(action)
-    }
+    }, [])
 
     return (
 
@@ -81,30 +49,13 @@ export const AppWithRedux = () => {
                 <Grid container spacing={3}>
                     {todolist.map(el => {
 
-                        let filtetedTask = tasks[el.id]
-
-                        if (el.filter === "complete") {
-                            filtetedTask = tasks[el.id].filter(el => el.isDone)
-                        }
-                        if (el.filter === "active") {
-                            filtetedTask = tasks[el.id].filter(el => !el.isDone)
-                        }
-
                         return (
                             <Grid item key={el.id}>
                                 <Paper style={{padding: "10px"}} elevation={7}>
-                                    <TodoList
+                                    <TodoListWithRedux
                                         todolistId={el.id}
-                                        updateTodolistTitle={updateTodolistTitle}
-                                        removeTodolist={removeTodolist}
                                         key={el.id}
-                                        editTask={editTask}
                                         title={el.title}
-                                        tasks={filtetedTask}
-                                        removeTask={removeTask}
-                                        changeFilter={changeFilter}
-                                        addTask={addTask}
-                                        changeTaskStatus={changeTaskStatus}
                                         filter={el.filter}
                                     />
                                 </Paper>

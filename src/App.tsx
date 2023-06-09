@@ -22,6 +22,7 @@ import {
     removeTaskAC,
     tasksReducer
 } from "./Reducers/tasksReducer";
+import {TodoListWithRedux} from "./TodoListWithRedux";
 
 export type FilterValuesType = "all" | "active" | "complete"
 export type TasksType = {

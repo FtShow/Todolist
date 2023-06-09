@@ -1,11 +1,11 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 type AddItemFormPropsType = {
     callback: (newTitle: string) => void
 }
-export const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
+export const AddItemForm: React.FC<AddItemFormPropsType> = memo((props) => {
     const [title, setTitle] = useState<string>("")
     const [error, setError] = useState<boolean>(false)
     const censure = title.split(" ").reduce((acc: boolean, elem) => elem == "fuck" ? true : acc, false)
@@ -61,4 +61,4 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
 
         </div>
     );
-};
+})
