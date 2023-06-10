@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, memo, useCallback, useMemo} from "react";
+import React, {FC, memo, useCallback, useMemo} from "react";
 // @ts-ignore
 import autoAnimate from "@formkit/auto-animate";
 import {FilterValuesType} from "./App";
@@ -6,15 +6,13 @@ import {AddItemForm} from "./Components/AddItemForm";
 import {EditableSpan} from "./Components/EditableSpan";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./Reducers/store";
 import {v1} from "uuid";
 import {addTaskAC, changeTaskStatusAC, editTaskAC, removeTaskAC} from "./Reducers/tasksReducer";
 import {changeFilterTodolistAC, removeTodolistAC, updateTodolistTitleAC} from "./Reducers/todoListReducer";
-import {Task} from "./Components/Task";
 import {ButtonWithMemo} from "./Components/ButtonWithMemo";
+import {TaskWithRedux} from "./Components/TaskWithRedux";
 
 type TodoListPropsType = {
 
@@ -57,26 +55,24 @@ export const TodoListWithRedux: FC<TodoListPropsType> = memo((props) => {
 
 
     //вывод каждой такси
-    if (props.filter === "complete") {
-        tasks = tasks.filter(el => el.isDone)
-    }
-    if (props.filter === "active") {
-        tasks = tasks.filter(el => !el.isDone)
-    }
+    useMemo(() => {
+        if (props.filter === "complete") {
+            tasks = tasks.filter(el => el.isDone)
+        }
+        if (props.filter === "active") {
+            tasks = tasks.filter(el => !el.isDone)
+        }
+    }, [props.filter])
     const tasksJSXElements: Array<JSX.Element> = useMemo(() => {
         return tasks.map((elem: TaskType, index: number): JSX.Element => {
 
 
             const taskClass = elem.isDone ? "taskIsDone" : "task"
             return (
-                <Task
+                <TaskWithRedux
                     key={elem.id}
                     taskID={elem.id}
-                    title={elem.title}
-                    checked={elem.isDone}
-                    removeTask={removeTask}
-                    changeStatus={changeStatus}
-                    editTaskSpan={editTaskSpan}
+                    todolistID={props.todolistId}
                 />
             )
         })
